@@ -23,7 +23,7 @@ function GameObject(attributes){
 GameObject.prototype.destroy = function(){
   return `${this.name} was removed from the game.`;
 };
-
+  
 
 /*
   === CharacterStats ===
@@ -61,7 +61,7 @@ return `${this.name} took damage.`;
  Humanoid.prototype.greet = function(){
    return `${this.name} offers a greeting in ${this.language}.`;
  };
- 
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -121,6 +121,7 @@ return `${this.name} took damage.`;
     language: 'Elvish',
   });
 
+
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -134,6 +135,79 @@ return `${this.name} took damage.`;
 
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function. 
+  function Villain(attributes){
+    Humanoid.call(this, attributes);
+    if (this.health <= 0){
+      return this.destroy();
+    }
+  };
+  Villain.prototype = Object.create(Humanoid.prototype);
+
+  Villain.prototype.punch = function(opponent){
+    return opponent.healthPoints = opponent.healthPoints - 3;
+    console.log(opponent.healthPoints);
+  };
+
+  Villain.prototype.scream = function(opponent){
+    return opponent.heightPoints = opponent.healthPoints - 1;
+    console.log(opponent.healthPoints);
+  };
+
+  function Hero(attributes){
+    Humanoid.call(this, attributes);
+    if (this.health <= 0){
+      return this.destroy();
+    }
+  };
+  Hero.prototype = Object.create(Humanoid.prototype);
+
+  Hero.prototype.punch = function(opponent){
+    return opponent.healthPoints = opponent.healthPoints - 3;
+    console.log(opponent.healthPoints);
+  };
+  Hero.prototype.scream = function(opponent){
+    return opponent.heightPoints = opponent.healthPoints - 1;
+    console.log(opponent.healthPoints);
+  };
+
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+  const goblin = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 1,
+    },
+    healthPoints: 8,
+    name: 'Corp',
+    team: 'Cave Kingdom',
+    weapons: [
+      'Rock',
+      'Bone Dagger',
+    ],
+    language: 'Common Tongue',
+  });
+
+  const paladin = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 3,
+      height: 5,
+    },
+    healthPoints: 15,
+    name: 'Jakoby',
+    team: 'Elysia',
+    weapons: [
+      '2H Sword',
+    ],
+    language: 'Common Tongue',
+  });
+
+  paladin.punch(goblin);
+  goblin.scream(paladin);
+  paladin.punch(goblin);
+  goblin.punch(paladin);
+  paladin.punch(goblin);
